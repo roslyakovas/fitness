@@ -89,7 +89,7 @@ async function loadProgram() {
 
   for (let i = 1; i <= 17; i++) {
     try {
-      const res = await fetch(`program/week${i}.json`);
+      const res = await fetch(`./program/week${i}.json`);
       const data = await res.json();
       program.push(data);
     } catch (e) {
