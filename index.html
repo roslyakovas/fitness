@@ -142,16 +142,7 @@ function render(){
     if(!week) return;
 
     // 🔥 ПРОХОДКА
-    if(week.type === 'test'){
-      app.innerHTML += `
-        <div class="card" style="background:#000;color:#fff">
-          🏆 ПРОХОДКА<br>
-          Обнови свои максимумы
-        </div>
-      `;
-    }
-
-    // 🔥 НЕДЕЛЯ + ФАЗА
+        // 🔥 НЕДЕЛЯ + ФАЗА
     app.innerHTML += `
       <div class="card">
         Неделя ${week.week}<br>
@@ -243,6 +234,58 @@ function render(){
       </div>
     `;
   }
+	if(screen === 'test'){
+
+  app.innerHTML = `
+    <div class="card" style="background:#000;color:#fff">
+      🏆 ПРОХОДКА
+    </div>
+
+    <div class="card">
+      <h3>Введи новые максимумы</h3>
+
+      <input id="test_squat" placeholder="Присед (кг)">
+      <input id="test_bench" placeholder="Жим (кг)">
+      <input id="test_deadlift" placeholder="Тяга (кг)">
+
+      <button onclick="saveTest()">Сохранить результат</button>
+    </div>
+  `;
+}
+}
+
+	function saveTest(){
+
+  const squat = +document.getElementById('test_squat').value;
+  const bench = +document.getElementById('test_bench').value;
+  const deadlift = +document.getElementById('test_deadlift').value;
+
+  if(!squat || !bench || !deadlift){
+    alert('Заполни все поля');
+    return;
+  }
+
+  const newMaxes = {
+    squat,
+    bench,
+    deadlift
+  };
+
+  // сохраняем как цель
+  targetMaxes = newMaxes;
+  localStorage.setItem('targetMaxes', JSON.stringify(newMaxes));
+
+  // применяем
+  maxes = newMaxes;
+  localStorage.setItem('maxes', JSON.stringify(newMaxes));
+
+  // новый цикл
+  currentWeek = 1;
+  screen = 'plan';
+
+  alert('Новый цикл начат 🚀');
+
+  render();
 }
 
 // ===== НАВИГАЦИЯ =====
@@ -253,8 +296,9 @@ function setScreen(s){
 
 function nextWeek(){
 
-  if(currentWeek === 17){
-    generateNextCycle();
+  if(currentWeek === 16){
+    screen = 'test'; // 👉 переключаем экран
+    render();
     return;
   }
 
@@ -347,6 +391,12 @@ function generateNextCycle() {
   render();
 }
 
+	let testResults = {
+  bench: '',
+  squat: '',
+  deadlift: ''
+};
+	
 </script>
 
 </body>
