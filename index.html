@@ -135,19 +135,23 @@ function render(){
   const app = document.getElementById('app');
   app.innerHTML = '';
 
-if(week.type === 'test'){
-  app.innerHTML += `
-    <div class="card" style="background:#000;color:#fff">
-      🏆 ПРОХОДКА<br>
-      Обнови свои максимумы
-    </div>
-  `;
-}
-
+  // ===== ПЛАН =====
   if(screen === 'plan'){
-    const week = program.find(w=>w.week===currentWeek);
+
+    const week = program.find(w => w.week === currentWeek);
     if(!week) return;
 
+    // 🔥 ПРОХОДКА
+    if(week.type === 'test'){
+      app.innerHTML += `
+        <div class="card" style="background:#000;color:#fff">
+          🏆 ПРОХОДКА<br>
+          Обнови свои максимумы
+        </div>
+      `;
+    }
+
+    // 🔥 НЕДЕЛЯ + ФАЗА
     app.innerHTML += `
       <div class="card">
         Неделя ${week.week}<br>
@@ -155,40 +159,48 @@ if(week.type === 'test'){
       </div>
     `;
 
-if(targetMaxes.bench){
-  app.innerHTML += `
-    <div class="card">
-      🎯 Цель:<br>
-      Жим: ${targetMaxes.bench} кг<br>
-      Присед: ${targetMaxes.squat} кг<br>
-      Тяга: ${targetMaxes.deadlift} кг
-    </div>
-  `;
-}
+    // 🎯 ЦЕЛИ
+    if(targetMaxes && targetMaxes.bench){
+      app.innerHTML += `
+        <div class="card">
+          🎯 Цель:<br>
+          Жим: ${targetMaxes.bench} кг<br>
+          Присед: ${targetMaxes.squat} кг<br>
+          Тяга: ${targetMaxes.deadlift} кг
+        </div>
+      `;
+    }
 
-    week.days.forEach(day=>{
+    // 🔥 ДНИ
+    week.days.forEach(day => {
+
       let html = `<div class="card"><b>${day.day}</b>`;
 
-      day.exercises.forEach(ex=>{
+      day.exercises.forEach(ex => {
+
         html += `<div class="exercise">${ex.name}`;
 
-        ex.setsData.forEach(s=>{
-  html += `
-    <div class="set ${getColor(s.percent)}">
-      <span>${s.percent}% (${calcWeight(ex.type, s.percent)} кг)</span>
-      <span>${s.reps} x ${s.sets}</span>
-    </div>
-  `;
+        ex.setsData.forEach(s => {
 
-  // 👉 ВОТ СЮДА вставка
-  if(s.percent === 100){
-    html += `
-      <button onclick="savePR('${ex.type}')">
-        Сохранить результат
-      </button>
-    `;
-  }
-});
+          html += `
+            <div class="set ${getColor(s.percent)}">
+              <span>${s.percent}% (${calcWeight(ex.type, s.percent)} кг)</span>
+              <span>${s.reps} x ${s.sets}</span>
+            </div>
+          `;
+
+          // 💥 КНОПКА СОХРАНЕНИЯ 1ПМ
+          if(s.percent === 100){
+            html += `
+              <button 
+                onclick="savePR('${ex.type}')"
+                style="margin-top:5px;background:#34c759;color:#fff;border:none;padding:8px;border-radius:8px;width:100%;">
+                Сохранить результат
+              </button>
+            `;
+          }
+
+        });
 
         html += `</div>`;
       });
@@ -197,6 +209,7 @@ if(targetMaxes.bench){
       app.innerHTML += html;
     });
 
+    // 🔥 НАВИГАЦИЯ
     app.innerHTML += `
       <div class="card">
         <button onclick="prevWeek()">⬅</button>
@@ -206,24 +219,26 @@ if(targetMaxes.bench){
     `;
   }
 
+  // ===== НАСТРОЙКИ =====
   if(screen === 'settings'){
-	if(screen === 'settings'){
 
-  const currentMode = localStorage.getItem('progressMode') || 'auto2.5'; // 👈 ВСТАВИТЬ СЮДА
+    const currentMode = localStorage.getItem('progressMode') || 'auto2.5';
 
-  app.innerHTML = `
     app.innerHTML = `
       <div class="card">
         <h3>1ПМ</h3>
+
         <input placeholder="Жим" id="bench" value="${maxes.bench||''}">
         <input placeholder="Присед" id="squat" value="${maxes.squat||''}">
         <input placeholder="Становая" id="deadlift" value="${maxes.deadlift||''}">
-	<label>Прогрессия</label>
-	<select id="mode">
-  <option value="auto2.5" ${currentMode==='auto2.5'?'selected':''}>Авто +2.5%</option>
-  <option value="auto5" ${currentMode==='auto5'?'selected':''}>Авто +5%</option>
-  <option value="manual" ${currentMode==='manual'?'selected':''}>Вручную</option>
-</select>
+
+        <label>Прогрессия</label>
+        <select id="mode">
+          <option value="auto2.5" ${currentMode==='auto2.5'?'selected':''}>Авто +2.5%</option>
+          <option value="auto5" ${currentMode==='auto5'?'selected':''}>Авто +5%</option>
+          <option value="manual" ${currentMode==='manual'?'selected':''}>Вручную</option>
+        </select>
+
         <button onclick="saveSettings()">Сохранить</button>
       </div>
     `;
