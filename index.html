@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitness Planner</title>
+
+<style>
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont;
+  background:#f2f2f7;
+}
+
+.header {
+  padding:20px;
+  font-size:22px;
+  font-weight:600;
+}
+
+.container {
+  padding:15px;
+}
+
+.card {
+  background:#fff;
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+.exercise {
+  margin-top:10px;
+}
+
+.set {
+  padding:6px;
+  border-radius:10px;
+  margin:3px 0;
+  display:flex;
+  justify-content:space-between;
+}
+
+.low { background:#e5e5ea; }
+.mid { background:#007aff; color:white; }
+.high { background:#ff3b30; color:white; }
+
+.tabbar {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  background:#fff;
+  border-top:1px solid #ccc;
+}
+
+.tab {
+  flex:1;
+  text-align:center;
+  padding:10px;
+}
+
+input {
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">🏋️ Fitness Planner</div>
+
+<div class="container" id="app"></div>
+
+<div class="tabbar">
+  <div class="tab" onclick="setScreen('plan')">План</div>
+  <div class="tab" onclick="setScreen('settings')">Настройки</div>
+</div>
+
+<script>
+
+async function loadProgram() {
+  program = [];
+
+  for (let i = 1; i <= 17; i++) {
+    try {
+      const res = await fetch(`program/week${i}.json`);
+      const data = await res.json();
+      program.push(data);
+    } catch (e) {
+      console.error(`Ошибка загрузки week${i}`, e);
+    }
+  }
+
+  render();
+
+let targetMaxes = JSON.parse(localStorage.getItem('targetMaxes') || '{}');
+
+// ===== 1ПМ =====
+let maxes = JSON.parse(localStorage.getItem('maxes') || '{}');
+
+// ===== UI =====
+let screen = 'plan';
+let currentWeek = 1;
+
+// ===== ФАЗЫ =====
+function getPhase(w){
+  if(w<=6) return 'База';
+  if(w<=10) return 'Сила';
+  if(w<=14) return 'Пик';
+  if(w===15) return 'Максимум';
+  return 'Разгрузка';
+}
+
+// ===== ЦВЕТ =====
+function getColor(p){
+  if(p < 70) return 'low';
+  if(p < 85) return 'mid';
+  return 'high';
+}
+
+// ===== ВЕС =====
+function calcWeight(type, percent){
+  if(!maxes[type]) return '-';
+  return Math.round(maxes[type] * percent / 100);
+}
+
+// ===== РЕНДЕР =====
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+if(week.type === 'test'){
+  app.innerHTML += `
+    <div class="card" style="background:#000;color:#fff">
+      🏆 ПРОХОДКА<br>
+      Обнови свои максимумы
+    </div>
+  `;
+}
+
+  if(screen === 'plan'){
+    const week = program.find(w=>w.week===currentWeek);
+    if(!week) return;
+
+    app.innerHTML += `
+      <div class="card">
+        Неделя ${week.week}<br>
+        Фаза: <b>${getPhase(week.week)}</b>
+      </div>
+    `;
+
+if(targetMaxes.bench){
+  app.innerHTML += `
+    <div class="card">
+      🎯 Цель:<br>
+      Жим: ${targetMaxes.bench} кг<br>
+      Присед: ${targetMaxes.squat} кг<br>
+      Тяга: ${targetMaxes.deadlift} кг
+    </div>
+  `;
+}
+
+    week.days.forEach(day=>{
+      let html = `<div class="card"><b>${day.day}</b>`;
+
+      day.exercises.forEach(ex=>{
+        html += `<div class="exercise">${ex.name}`;
+
+        ex.setsData.forEach(s=>{
+  html += `
+    <div class="set ${getColor(s.percent)}">
+      <span>${s.percent}% (${calcWeight(ex.type, s.percent)} кг)</span>
+      <span>${s.reps} x ${s.sets}</span>
+    </div>
+  `;
+
+  // 👉 ВОТ СЮДА вставка
+  if(s.percent === 100){
+    html += `
+      <button onclick="savePR('${ex.type}')">
+        Сохранить результат
+      </button>
+    `;
+  }
+});
+
+        html += `</div>`;
+      });
+
+      html += `</div>`;
+      app.innerHTML += html;
+    });
+
+    app.innerHTML += `
+      <div class="card">
+        <button onclick="prevWeek()">⬅</button>
+        Неделя ${currentWeek}
+        <button onclick="nextWeek()">➡</button>
+      </div>
+    `;
+  }
+
+  if(screen === 'settings'){
+	if(screen === 'settings'){
+
+  const currentMode = localStorage.getItem('progressMode') || 'auto2.5'; // 👈 ВСТАВИТЬ СЮДА
+
+  app.innerHTML = `
+    app.innerHTML = `
+      <div class="card">
+        <h3>1ПМ</h3>
+        <input placeholder="Жим" id="bench" value="${maxes.bench||''}">
+        <input placeholder="Присед" id="squat" value="${maxes.squat||''}">
+        <input placeholder="Становая" id="deadlift" value="${maxes.deadlift||''}">
+	<label>Прогрессия</label>
+	<select id="mode">
+  <option value="auto2.5" ${currentMode==='auto2.5'?'selected':''}>Авто +2.5%</option>
+  <option value="auto5" ${currentMode==='auto5'?'selected':''}>Авто +5%</option>
+  <option value="manual" ${currentMode==='manual'?'selected':''}>Вручную</option>
+</select>
+        <button onclick="saveSettings()">Сохранить</button>
+      </div>
+    `;
+  }
+}
+
+// ===== НАВИГАЦИЯ =====
+function setScreen(s){
+  screen = s;
+  render();
+}
+
+function nextWeek(){
+
+  if(currentWeek === 17){
+    generateNextCycle();
+    return;
+  }
+
+  currentWeek++;
+  render();
+}
+
+function prevWeek(){
+  currentWeek--;
+  if(currentWeek < 1) currentWeek = 16;
+  render();
+}
+
+// ===== СОХРАНЕНИЕ =====
+function saveSettings(){
+  maxes = {
+    bench: +document.getElementById('bench').value,
+    squat: +document.getElementById('squat').value,
+    deadlift: +document.getElementById('deadlift').value
+  };
+  localStorage.setItem('maxes', JSON.stringify(maxes));
+	localStorage.setItem('progressMode', document.getElementById('mode').value);
+  alert('Сохранено');
+}
+
+// ===== СТАРТ =====
+renderLoading();
+loadProgram();
+
+function renderLoading(){
+  document.getElementById('app').innerHTML = `
+    <div class="card">Загрузка программы...</div>
+  `;
+}
+
+function getPhase(w){
+  if(w <= 6) return 'База';
+  if(w <= 10) return 'Сила';
+  if(w <= 14) return 'Пик';
+  if(w === 15) return 'Максимум';
+  if(w === 16) return 'Разгрузка';
+  return 'Проходка';
+}
+
+function savePR(type){
+  const val = prompt('Новый 1ПМ:');
+  if(!val) return;
+
+  maxes[type] = +val;
+  localStorage.setItem('maxes', JSON.stringify(maxes));
+
+  alert('Обновлено!');
+}
+
+function generateNextCycle() {
+
+  const mode = localStorage.getItem('progressMode') || 'auto2.5';
+
+  let newMaxes = {};
+
+  for (let key in maxes) {
+    let current = maxes[key];
+
+    if(mode === 'auto2.5'){
+      newMaxes[key] = Math.round(current * 1.025);
+    }
+
+    if(mode === 'auto5'){
+      newMaxes[key] = Math.round(current * 1.05);
+    }
+
+    if(mode === 'manual'){
+      const val = prompt(`Новый 1ПМ для ${key}`, current);
+      newMaxes[key] = +val || current;
+    }
+  }
+
+  targetMaxes = newMaxes;
+  localStorage.setItem('targetMaxes', JSON.stringify(targetMaxes));
+
+  // 👉 применяем
+  maxes = newMaxes;
+  localStorage.setItem('maxes', JSON.stringify(maxes));
+
+  // 👉 сброс цикла
+  currentWeek = 1;
+
+  alert('Новый цикл начат 🚀');
+
+  render();
+}
+
+</script>
+
+</body>
+</html>

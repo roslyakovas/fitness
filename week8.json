@@ -1,0 +1,98 @@
+{
+  "week": 8,
+  "days": [
+    {
+      "day": "Понедельник",
+      "exercises": [
+        {
+          "name": "Присед",
+          "type": "squat",
+          "setsData": [
+            { "percent": 65, "reps": 4, "sets": 1 },
+            { "percent": 70, "reps": 4, "sets": 1 },
+            { "percent": 75, "reps": 4, "sets": 1 },
+            { "percent": 80, "reps": 4, "sets": 3 }
+          ]
+        },
+        {
+          "name": "Жим лежа",
+          "type": "bench",
+          "setsData": [
+            { "percent": 60, "reps": 5, "sets": 1 },
+            { "percent": 65, "reps": 5, "sets": 1 },
+            { "percent": 70, "reps": 4, "sets": 1 },
+            { "percent": 75, "reps": 4, "sets": 1 },
+            { "percent": 80, "reps": 3, "sets": 3 }
+          ]
+        },
+        {
+          "name": "ОФП",
+          "type": "assist",
+          "setsData": []
+        }
+      ]
+    },
+
+    {
+      "day": "Среда",
+      "exercises": [
+        {
+          "name": "Присед",
+          "type": "squat",
+          "setsData": [
+            { "percent": 65, "reps": 4, "sets": 1 },
+            { "percent": 70, "reps": 4, "sets": 3 },
+            { "percent": 75, "reps": 3, "sets": 2 }
+          ]
+        },
+        {
+          "name": "Становая тяга",
+          "type": "deadlift",
+          "setsData": [
+            { "percent": 60, "reps": 6, "sets": 1 },
+            { "percent": 65, "reps": 6, "sets": 1 },
+            { "percent": 70, "reps": 6, "sets": 2 },
+            { "percent": 75, "reps": 6, "sets": 2 },
+            { "percent": 80, "reps": 4, "sets": 1 }
+          ]
+        },
+        {
+          "name": "Наклоны стоя",
+          "type": "assist",
+          "setsData": []
+        },
+        {
+          "name": "Жим лежа узким хватом",
+          "type": "bench",
+          "setsData": []
+        }
+      ]
+    },
+
+    {
+      "day": "Пятница",
+      "exercises": [
+        {
+          "name": "Присед",
+          "type": "squat",
+          "setsData": [
+            { "percent": 60, "reps": 4, "sets": 1 },
+            { "percent": 65, "reps": 4, "sets": 2 },
+            { "percent": 70, "reps": 3, "sets": 2 },
+            { "percent": 75, "reps": 3, "sets": 2 },
+            { "percent": 80, "reps": 2, "sets": 2 }
+          ]
+        },
+        {
+          "name": "Жим лежа",
+          "type": "bench",
+          "setsData": [
+            { "percent": 60, "reps": 5, "sets": 1 },
+            { "percent": 65, "reps": 5, "sets": 1 },
+            { "percent": 70, "reps": 5, "sets": 3 }
+          ]
+        }
+      ]
+    }
+  ]
+}

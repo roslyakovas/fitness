@@ -1,0 +1,89 @@
+{
+  "week": 1,
+  "days": [
+    {
+      "day": "Понедельник",
+      "exercises": [
+        {
+          "name": "Жим лежа",
+          "type": "bench",
+          "setsData": [
+            { "percent": 60, "reps": 5, "sets": 1 },
+            { "percent": 65, "reps": 5, "sets": 1 },
+            { "percent": 70, "reps": 5, "sets": 1 },
+            { "percent": 75, "reps": 4, "sets": 3 }
+          ]
+        },
+        {
+          "name": "Присед",
+          "type": "squat",
+          "setsData": [
+            { "percent": 65, "reps": 4, "sets": 2 },
+            { "percent": 70, "reps": 3, "sets": 5 }
+          ]
+        },
+        {
+          "name": "ОФП",
+          "type": "assist",
+          "setsData": []
+        }
+      ]
+    },
+
+    {
+      "day": "Среда",
+      "exercises": [
+        {
+          "name": "Присед со штангой на груди",
+          "type": "squat",
+          "setsData": [
+            { "percent": 60, "reps": 4, "sets": 1 },
+            { "percent": 65, "reps": 4, "sets": 2 },
+            { "percent": 70, "reps": 3, "sets": 3 }
+          ]
+        },
+        {
+          "name": "Становая тяга",
+          "type": "deadlift",
+          "setsData": [
+            { "percent": 65, "reps": 6, "sets": 1 },
+            { "percent": 70, "reps": 6, "sets": 5 }
+          ]
+        },
+        {
+          "name": "Наклоны стоя",
+          "type": "assist",
+          "setsData": []
+        },
+        {
+          "name": "Жим стоя",
+          "type": "assist",
+          "setsData": []
+        }
+      ]
+    },
+
+    {
+      "day": "Пятница",
+      "exercises": [
+        {
+          "name": "Присед",
+          "type": "squat",
+          "setsData": [
+            { "percent": 65, "reps": 4, "sets": 2 },
+            { "percent": 70, "reps": 3, "sets": 5 }
+          ]
+        },
+        {
+          "name": "Жим лежа",
+          "type": "bench",
+          "setsData": [
+            { "percent": 60, "reps": 5, "sets": 1 },
+            { "percent": 65, "reps": 5, "sets": 1 },
+            { "percent": 70, "reps": 5, "sets": 2 }
+          ]
+        }
+      ]
+    }
+  ]
+}
