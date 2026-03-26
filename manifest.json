@@ -1,4 +1,8 @@
-"icons": [
+{
+  "short_name": "Zhim-Zhim",
+  "name": "Fitness Planner",
+  "description": "ИИ-фитнесс тренер",
+  "icons": [
   {
     "src": "icon.png",
     "sizes": "512x512",
@@ -15,4 +19,10 @@
     "sizes": "180x180",
     "type": "image/png"
   }
-]
+],
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981"
+}
