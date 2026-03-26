@@ -98,7 +98,7 @@ async function loadProgram() {
   }
 
   render();
-
+}
 let targetMaxes = JSON.parse(localStorage.getItem('targetMaxes') || '{}');
 
 // ===== 1ПМ =====
@@ -264,7 +264,7 @@ function nextWeek(){
 
 function prevWeek(){
   currentWeek--;
-  if(currentWeek < 1) currentWeek = 16;
+  if(currentWeek < 1) currentWeek = 17;
   render();
 }
 
